@@ -203,7 +203,8 @@ public class Bundle {
 	
 	public void put( String key, float value ) {
 		try {
-			data.put( key, value );
+			// PD3D: "float" is not present in android-27
+			data.put( key, (double)value );
 		} catch (JSONException e) {
 
 		}

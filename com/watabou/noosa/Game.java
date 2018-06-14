@@ -63,7 +63,7 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 	// New scene we are going to switch to
 	protected Scene requestedScene;
 	// true if scene switch is requested
-	protected boolean requestedReset = true;
+	public boolean requestedReset = true;
 	// New scene class
 	protected Class<? extends Scene> sceneClass;
 	
@@ -74,7 +74,11 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 	
 	public static float timeScale = 1f;
 	public static float elapsed = 0f;
-	
+
+    // Original time without speed increment (see PixelDungeon::switchScene())
+    public static float pd3d_timescale_orig = 1f;
+    public static float pd3d_elapsed_orig = 0f;
+
 	protected GLSurfaceView view;
 	protected SurfaceHolder holder;
 	
@@ -287,8 +291,12 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 	}
 	
 	protected void update() {
-		Game.elapsed = Game.timeScale * step * 0.001f;
-		
+        // Increased game speed
+        Game.elapsed = Game.timeScale * step * 0.001f;
+
+        // Original game speed
+        Game.pd3d_elapsed_orig = Game.pd3d_timescale_orig * step * 0.001f;
+
 		synchronized (motionEvents) {
 			Touchscreen.processTouchEvents( motionEvents );
 			motionEvents.clear();
@@ -301,7 +309,7 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 		scene.update();		
 		Camera.updateAll();
 	}
-	
+
 	public static void vibrate( int milliseconds ) {
 		((Vibrator)instance.getSystemService( VIBRATOR_SERVICE )).vibrate( milliseconds );
 	}

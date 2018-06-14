@@ -54,6 +54,9 @@ public class MovieClip extends Image {
 			frameTimer += Game.elapsed;
 			while (frameTimer > curAnim.delay) {
 				frameTimer -= curAnim.delay;
+
+                // Draw only one animation frame
+                curFrame = curAnim.frames.length - 1;
 				if (curFrame == curAnim.frames.length - 1) {
 					if (curAnim.looped) {
 						curFrame = 0;
@@ -105,10 +108,18 @@ public class MovieClip extends Image {
 		public float delay;
 		public RectF[] frames;
 		public boolean looped;
-		
-		public Animation( int fps, boolean looped ) {
+
+        // PDPD: 
+        public int pd3d_fps;
+        public TextureFilm pd3d_film;
+        public Object[] pd3d_frames;
+        public String pd3d_name;
+
+		public Animation( String name, int fps, boolean looped ) {
 			this.delay = 1f / fps;
 			this.looped = looped;
+            pd3d_fps = fps;
+            pd3d_name = name;
 		}
 		
 		public Animation frames( RectF... frames ) {
@@ -121,11 +132,18 @@ public class MovieClip extends Image {
 			for (int i=0; i < frames.length; i++) {
 				this.frames[i] = film.get( frames[i] );
 			}
+            pd3d_film = film;
+            pd3d_frames = frames;
 			return this;
 		}
 		
-		public Animation clone() {
-			return new Animation( Math.round( 1 / delay ), looped ).frames( frames );
+		public Animation clone(String name) {
+            Animation a = new Animation( (name == null) ? pd3d_name : name, 
+              Math.round( 1 / delay ), looped ).frames( frames );
+            a.pd3d_fps = pd3d_fps;
+            a.pd3d_film = pd3d_film;
+            a.pd3d_frames = pd3d_frames;
+			return a;
 		}
 	}
 	

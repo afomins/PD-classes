@@ -48,7 +48,7 @@ public class Emitter extends Group {
 	protected int count;
 	protected float time;
 	
-	protected Factory factory;
+	/*protected*/public Factory factory;
 	
 	public void pos( float x, float y ) {
 		pos( x, y, 0, 0 );
@@ -89,12 +89,12 @@ public class Emitter extends Group {
 		
 		count = 0;
 		time = Random.Float( interval );
-		
-		on = true;
 	}
 	
 	@Override
 	public void update() {
+        // PD3D: Disable particles because they act weird when game speed is increased
+        on = false;
 		
 		if (on) {
 			time += Game.elapsed;
@@ -147,5 +147,10 @@ public class Emitter extends Group {
 		public boolean lightMode() {
 			return false;
 		}
+
+        // PD3D: Return event that describes emitted particle
+        public Object Pd3dGetEvent() {
+            return null;
+        }
 	}
 }

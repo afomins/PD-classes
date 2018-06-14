@@ -30,7 +30,11 @@ public class TextureFilm {
 	
 	private int texWidth;
 	private int texHeight;
-	
+
+    public int pd3d_frame_offset;
+    public int pd3d_frame_width;
+    public int pd3d_frame_height;
+
 	protected HashMap<Object,RectF> frames = new HashMap<Object, RectF>();
 	
 	public TextureFilm( Object tx ) {
@@ -41,6 +45,11 @@ public class TextureFilm {
 		texHeight = texture.height;
 		
 		add( null, FULL );
+
+        // Save size of the frame
+        pd3d_frame_offset = 0;
+        pd3d_frame_width = texWidth;
+        pd3d_frame_height = texHeight;
 	}
 	
 	public TextureFilm( SmartTexture texture, int width ) {
@@ -65,6 +74,11 @@ public class TextureFilm {
 				add( i * cols + j, rect );
 			}
 		}
+
+        // Save size of the frame
+        pd3d_frame_offset = 0;
+        pd3d_frame_width = width;
+        pd3d_frame_height = height;
 	}
 	
 	public TextureFilm( TextureFilm atlas, Object key, int width, int height ) {
@@ -86,6 +100,11 @@ public class TextureFilm {
 				add( i * cols + j, rect );
 			}
 		}
+
+        // Save size of the frame
+        pd3d_frame_offset = (int)((key instanceof Integer) ? key : 0);
+        pd3d_frame_width = width;
+        pd3d_frame_height = height;
 	}
 	
 	public void add( Object id, RectF rect ) {

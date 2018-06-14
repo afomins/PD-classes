@@ -56,6 +56,9 @@ public class Camera extends Gizmo {
 	protected float shakeX;
 	protected float shakeY;
 	
+    // PD3D
+    public boolean pd3d_shake_event;
+
 	public static Camera reset() {
 		return reset( createFullscreen( 1 ) );
 	}
@@ -228,5 +231,8 @@ public class Camera extends Gizmo {
 	public void shake( float magnitude, float duration ) {
 		shakeMagX = shakeMagY = magnitude;
 		shakeTime = shakeDuration = duration;
+
+        // PD3D: trigger shake event
+        pd3d_shake_event = true;
 	}
 }
